@@ -1,0 +1,33 @@
+{
+  "name": "proshop-api",
+  "version": "1.0.0",
+  "description": "Restful-API for a little online store named ProShop.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "docs": "jsdoc -c jsdoc.json",
+    "start": "node server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest"
+  },
+  "jest": {
+    "transform": {},
+    "globalTeardown": "./__tests__/teardown.js",
+    "testPathIgnorePatterns": [
+      "./__tests__/teardown.js"
+    ]
+  },
+  "author": "Matthias Arndt",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jest": "^29.7.0",
+    "jsdoc": "^4.0.4",
+    "jsonwebtoken": "^9.0.2",
+    "mariadb": "^3.4.0",
+    "nodemon": "^3.1.7"
+  }
+}
