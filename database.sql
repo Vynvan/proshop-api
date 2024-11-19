@@ -19,6 +19,7 @@ CREATE TABLE `address` (
    `state` VARCHAR(100) NOT NULL,
    `postal_code` VARCHAR(20) NOT NULL,
    `country` VARCHAR(100) NOT NULL,
+   `is_default` BOOLEAN NOT NULL DEFAULT FALSE,
    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -28,6 +29,7 @@ CREATE TABLE `product` (
    `description` text NOT NULL,
    `price` decimal(10,2) NOT NULL,
    `image` varchar(255) DEFAULT NULL,
+   `is_active` BOOLEAN NOT NULL DEFAULT TRUE,
    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
