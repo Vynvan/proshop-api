@@ -8,7 +8,7 @@ function getSignedToken(res, id) {
    const token = jwt.sign({ id }, process.env.TOKEN_KEY, {
       expiresIn: '2h',
    });
-   return res.status(200).json({ userId: id, token });
+   return res.status(201).json({ userId: id, token });
 }
 
 const router = express.Router();
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-   return res.status(200);
+   return res.status(204);
 });
 
 router.post('/register', async (req, res) => {
