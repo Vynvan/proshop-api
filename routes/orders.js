@@ -15,7 +15,7 @@ router.get('/:orderId([0-9]+)', async (req, res) => {
       const [order] = await conn.query(
          `SELECT o.sum_price, o.state, o.createdAt,
           a.address_name, a.street, a.city, a.postal_code, a.state, a.country,
-          p.product_id AS pid, p.title, SUBSTRING(p.description, 1, 50) AS text, i.price, i.quantity, p.image
+          p.product_id AS pid, p.title, i.price, i.quantity
           FROM 'order' o
           WHERE o.user_id = ? AND o.order_id = ?
           JOIN address a ON o.address_id = a.address_id
@@ -23,14 +23,7 @@ router.get('/:orderId([0-9]+)', async (req, res) => {
           JOIN product p ON p.product_id = i.product_id`,
          [req.user.id, orderId]
       );
-      if (adressCount === 0)
-         return res.status(400).json({ message: 'Adresse nicht gefunden.'});
-
-      const { insertId } = await conn.query('INSERT INTO order (address_id, sum_price, user_id)',
-         [addressId, sumPrice, req.user.id]
-      );
-
-      res.status(201).json({ orderId });
+      res.status(200).json({ order });
    } catch (err) {
       console.log(`##### ERROR DURING ORDER.JS/ (POST): ${err} #####`);
       return res.status(500).json({ message: 'Fehler beim Zugriff auf die Datenbank.' });
@@ -57,12 +50,12 @@ router.post('/', async (req, res) => {
       if (adressCount === 0)
          return res.status(400).json({ message: 'Adresse nicht gefunden.'});
 
-      const { insertId } = await conn.query('INSERT INTO order (address_id, sum_price, user_id)',
+      const { insertId } = await conn.query('INSERT INTO order (address_id, sum_price, user_id) VALUES (?, ?, ?)',
          [addressId, sumPrice, req.user.id]);
       const orderId = parseInt(insertId);
 
       articles.forEach(async article => {
-         await conn.query('INSERT INTO order_item (product_id, order_id, price, quantity',
+         await conn.query('INSERT INTO order_item (product_id, order_id, price, quantity) VALUES (?, ?, ?, ?)',
             [article.id, orderId, article.price, article.quantity ?? 1]
          );
       });

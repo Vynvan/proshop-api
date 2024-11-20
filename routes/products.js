@@ -6,8 +6,7 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', async (req, res) => {
-   let conn;
-
+   let conn, total;
    const page = parseInt(req.query.page) || 1;
    const limit = parseInt(req.query.limit) || 20;
    const offset = (page - 1) * limit;
@@ -20,9 +19,12 @@ router.get('/', async (req, res) => {
          [limit, offset]
       );
 
-      const [{ total }] = page > 1 ? [{ total: undefined }] : await conn.query(
-         'SELECT COUNT(*) AS total FROM product WHERE is_active = TRUE'
-      );
+      if (page > 1) total = undefined;
+      else {
+         const [{ totalCount }] = await conn.query(
+            'SELECT COUNT(*) AS totalCount FROM product WHERE is_active = TRUE');
+         total = parseInt(totalCount);
+      }
 
       res.status(200).json({ products, total, page, limit });
    } catch (err) {
