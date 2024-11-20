@@ -35,4 +35,27 @@ router.get('/', async (req, res) => {
    }
 });
 
+router.get('/:id', async (req, res) => {
+   let conn;
+   const update = !!req.query.update;
+   console.log(update)
+   // const id = parseInt(req.params.id);
+
+   try {
+      conn = await getConnection();
+      const product = await conn.query(
+         `SELECT product_id AS id, description AS text${update ? '' : ', title, price, image'} FROM product 
+          WHERE is_active = TRUE AND product_id = ?`,
+         [req.params.id]
+      );
+
+      res.status(200).json({ product });
+   } catch (err) {
+      console.log(`##### ERROR DURING PRODUCTS.JS/:id (GET): ${err} #####`);
+      return res.status(500).json({ message: 'Fehler beim Zugriff auf die Datenbank.' });
+   } finally {
+      if (conn) conn.release();
+   }
+});
+
 export default router;
