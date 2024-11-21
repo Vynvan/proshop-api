@@ -13,6 +13,7 @@ CREATE TABLE `user` (
 
 CREATE TABLE `address` (
    `address_id` INT AUTO_INCREMENT PRIMARY KEY,
+   `user_id` INT NOT NULL,
    `address_name` VARCHAR(100),
    `street` VARCHAR(255) NOT NULL,
    `city` VARCHAR(100) NOT NULL,
@@ -21,6 +22,7 @@ CREATE TABLE `address` (
    `country` VARCHAR(100) NOT NULL,
    `is_default` BOOLEAN NOT NULL DEFAULT FALSE,
    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`),
 );
 
 CREATE TABLE `product` (

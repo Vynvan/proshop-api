@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
           postal_code AS postal, country, is_default AS isDefault FROM address WHERE user_id = ?`,
          [req.user.id]);
 
-      res.status(201).json({ addresses });
+      res.status(200).json({ addresses });
    } catch (err) {
       console.log(`##### ERROR DURING ADDRESS.JS/ (GET): ${err} #####`);
       return res.status(500).json({ message: 'Fehler beim Zugriff auf die Datenbank.' });

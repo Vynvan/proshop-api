@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
+import addressRouter from './routes/address.js';
 import orderRouter from './routes/orders.js';
 import productRouter from './routes/products.js';
 import userRouter from './routes/users.js';
@@ -17,6 +18,7 @@ app.use(cors({ origin: process.env.HOST.split(',') }));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 // Routes:
+app.use('/address', addressRouter);
 app.use('/orders', orderRouter);
 app.use('/products', productRouter);
 app.use('/users', userRouter);
