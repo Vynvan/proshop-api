@@ -38,12 +38,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
    let conn;
    const update = !!req.query.update;
-   console.log(update)
-   // const id = parseInt(req.params.id);
 
    try {
       conn = await getConnection();
-      const product = await conn.query(
+      const [product] = await conn.query(
          `SELECT product_id AS id, description AS text${update ? '' : ', title, price, image'} FROM product 
           WHERE is_active = TRUE AND product_id = ?`,
          [req.params.id]
