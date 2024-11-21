@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
    let isDefault = defaultAddress && parseInt(defaultAddress) === 1 ? true : false;
    let conn;
 
-   if (!addressName || !street || !city || !state || !postal || !country)
+   if (!addressName || !street || !city || !postal || !country)
       return res.status(400).json({ message: 'Anfrage ungültig!'});
 
    try {
@@ -52,6 +52,66 @@ router.post('/', async (req, res) => {
       res.status(201).json({ addressId: parseInt(insertId) });
    } catch (err) {
       console.log(`##### ERROR DURING ADDRESS.JS/ (POST): ${err} #####`);
+      return res.status(500).json({ message: 'Fehler beim Zugriff auf die Datenbank.' });
+   } finally {
+      if (conn) conn.release();
+   }
+});
+
+router.put('/', async (req, res) => {
+   const { id, name, street, city, state, postal, country, defaultAddress } = req.body;
+   const isDefaultChanges = defaultAddress === true || defaultAddress === false;
+   const isDefault = defaultAddress && parseInt(defaultAddress) === 1 ? true : false;
+   const columns = [], values = [];
+   let conn;
+
+   if (!id) return res.status(400).json({ message: 'Anfrage ungültig!'});
+
+   try {
+      conn = await getConnection();
+
+      if (isDefaultChanges && isDefault) {
+         await conn.query(
+            `UPDATE address SET is_default = false WHERE user_id = ? AND id != ?`,
+            [req.user.id, id]
+         );
+      }
+   
+      if (name) {
+         columns.push('name=?');
+         values.push(name);
+      }
+      if (street) {
+         columns.push('street=?');
+         values.push(street);
+      }
+      if (city) {
+         columns.push('city=?');
+         values.push(city);
+      }
+      if (state) {
+         columns.push('state=?');
+         values.push(state);
+      }
+      if (postal) {
+         columns.push('postal=?');
+         values.push(postal);
+      }
+      if (country) {
+         columns.push('country=?');
+         values.push(country);
+      }
+      if (isDefaultChanges) {
+         columns.push('is_default=?');
+         values.push(isDefault);
+      }
+
+      const { affectedRows } = await conn.query(
+         `UPDATE address SET ${columns.join(',')} WHERE user_id = ?`,
+         [...values, req.user.id]);
+      res.status(200).json({ success: affectedRows });
+   } catch (err) {
+      console.log(`##### ERROR DURING ADDRESS.JS/ (PUT): ${err} #####`);
       return res.status(500).json({ message: 'Fehler beim Zugriff auf die Datenbank.' });
    } finally {
       if (conn) conn.release();
