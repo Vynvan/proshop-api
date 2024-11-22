@@ -26,22 +26,24 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-   const { name, street, city, state, postal, country, defaultAddress } = req.body;
-   let isDefault = defaultAddress && parseInt(defaultAddress) === 1 ? true : false;
+   const { name, street, city, state, postal, country } = req.body;
+   let isDefault = req.body.isDefault;
    let conn;
 
-   if (!addressName || !street || !city || !postal || !country)
+   if (!name || !street || !city || !postal || !country)
       return res.status(400).json({ message: 'Anfrage ungültig!'});
 
    try {
       conn = await getConnection();
 
-      if (!isDefault) {
-         const [{ adressCount }] = await conn.query(
-            'SELECT COUNT(*) AS addressCount FROM address WHERE user_id = ? AND is_default = TRUE',
+      if (isDefault)
+         await conn.query(`UPDATE address SET is_default = false WHERE user_id = ?`, [req.user.id]);
+      else {
+         const [{ addressCount }] = await conn.query(
+            'SELECT COUNT(*) AS addressCount FROM address WHERE user_id = ? AND is_default = true',
             [req.user.id]
          );
-         isDefault = adressCount === 0;
+         isDefault = addressCount === 0;
       }
 
       const { insertId } = await conn.query(
@@ -59,9 +61,8 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/', async (req, res) => {
-   const { id, name, street, city, state, postal, country, defaultAddress } = req.body;
-   const isDefaultChanges = defaultAddress === true || defaultAddress === false;
-   const isDefault = defaultAddress && parseInt(defaultAddress) === 1 ? true : false;
+   const { id, name, street, city, state, postal, country, isDefault } = req.body;
+   const isDefaultChanges = isDefault === true || isDefault === false;
    const columns = [], values = [];
    let conn;
 
@@ -72,13 +73,13 @@ router.put('/', async (req, res) => {
 
       if (isDefaultChanges && isDefault) {
          await conn.query(
-            `UPDATE address SET is_default = false WHERE user_id = ? AND id != ?`,
+            `UPDATE address SET is_default = false WHERE user_id = ? AND address_id != ?`,
             [req.user.id, id]
          );
       }
    
       if (name) {
-         columns.push('name=?');
+         columns.push('address_name=?');
          values.push(name);
       }
       if (street) {
@@ -94,7 +95,7 @@ router.put('/', async (req, res) => {
          values.push(state);
       }
       if (postal) {
-         columns.push('postal=?');
+         columns.push('postal_code=?');
          values.push(postal);
       }
       if (country) {
@@ -106,9 +107,11 @@ router.put('/', async (req, res) => {
          values.push(isDefault);
       }
 
+      if (columns.length === 0) return res.status(400).json({ message: 'Anfrage ungültig!'});
+
       const { affectedRows } = await conn.query(
-         `UPDATE address SET ${columns.join(',')} WHERE user_id = ?`,
-         [...values, req.user.id]);
+         `UPDATE address SET ${columns.join(',')} WHERE user_id = ? AND address_id = ?`,
+         [...values, req.user.id, id]);
       res.status(200).json({ success: affectedRows });
    } catch (err) {
       console.log(`##### ERROR DURING ADDRESS.JS/ (PUT): ${err} #####`);
