@@ -62,10 +62,10 @@ router.post('/', async (req, res) => {
 
 router.put('/', async (req, res) => {
    const { id, name, street, city, state, postal, country, isDefault } = req.body;
-   const isDefaultChanges = isDefault === true || isDefault === false;
+   const isDefaultChanges = isDefault === 0 || isDefault === 1;
    const columns = [], values = [];
    let conn;
-
+   console.log('id:', id, ', isDefault:', isDefault)
    if (!id) return res.status(400).json({ message: 'Anfrage ungültig!'});
 
    try {
