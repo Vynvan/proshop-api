@@ -15,12 +15,12 @@ router.get('/:orderId([0-9]+)', async (req, res) => {
       const [order] = await conn.query(
          `SELECT o.sum_price, o.state, o.createdAt,
           a.address_name, a.street, a.city, a.postal_code, a.state, a.country,
-          p.product_id AS pid, p.title, i.price, i.quantity
+          p.product_id AS id, p.title, i.price, i.quantity
           FROM 'order' o
-          WHERE o.user_id = ? AND o.order_id = ?
-          JOIN address a ON o.address_id = a.address_id
+          JOIN address a ON a.address_id = o.address_id
           JOIN order_item i ON i.order_id = o.order_id
-          JOIN product p ON p.product_id = i.product_id`,
+          JOIN product p ON p.product_id = i.product_id
+          WHERE o.user_id = ? AND o.order_id = ?`,
          [req.user.id, orderId]
       );
       res.status(200).json({ order });
@@ -30,7 +30,6 @@ router.get('/:orderId([0-9]+)', async (req, res) => {
    } finally {
       if (conn) conn.release();
    }
-
 });
 
 router.post('/', async (req, res) => {
