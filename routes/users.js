@@ -14,13 +14,19 @@ function getSignedToken(res, id) {
 const router = express.Router();
 
 /**
-* Takes username and password and returns userId and jwt, if the user is valid.
-* @function
-* @name login
-* @route {POST} /users
-* @returns {Object} JSON object with userId and token.
-*/
-router.post('/', async (req, res) => {
+ * Logs in a user by validating the provided username and password.
+ * Returns userId and JWT token if the user is valid.
+ * 
+ * @function
+ * @name login
+ * @route {POST} /users
+ * @param {Object} req - The request object containing username and password.
+ * @param {Object} res - The response object used to send back the userId and token.
+ * @returns {Object} JSON object with userId and token if login is successful.
+ * @throws {404} If the username or password is incorrect.
+ * @throws {403} If the password does not match.
+ * @throws {500} If there is an error accessing the database.
+ */router.post('/', async (req, res) => {
    const { username, password } = req.body;
    let conn, user;
 
@@ -45,10 +51,33 @@ router.post('/', async (req, res) => {
    return getSignedToken(res, user.id);
 });
 
+/**
+ * Logs out a user by returning a 204 No Content response.
+ * 
+ * @function
+ * @name logout
+ * @route {POST} /users/logout
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object used to send back the response status.
+ * @returns {void} Returns a 204 No Content response.
+ */
 router.post('/logout', (req, res) => {
    return res.status(204);
 });
 
+/**
+ * Registers a new user by creating an account with provided details.
+ * Returns userId and JWT token upon successful registration.
+ * 
+ * @function
+ * @name register
+ * @route {POST} /users/register
+ * @param {Object} req - The request object containing email, name, username, and password.
+ * @param {Object} res - The response object used to send back the userId and token.
+ * @returns {Object} JSON object with userId and token if registration is successful.
+ * @throws {403} If the email or username is already taken.
+ * @throws {500} If there is an error accessing the database.
+ */
 router.post('/register', async (req, res) => {
    const { email, name, username, password } = req.body;
    let conn;
@@ -71,7 +100,7 @@ router.post('/register', async (req, res) => {
          [username, name, email, hashedPassword]
       );
 
-      return getSignedToken(res, parseInt(insertId), username);
+      return getSignedToken(res, parseInt(insertId));
    } catch (err) {
       console.log(`##### ERROR DURING USER.JS/register: ${err} #####`);
       return res.status(500).json({ message: 'Fehler beim Zugriff auf die Datenbank.' });
