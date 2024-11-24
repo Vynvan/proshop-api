@@ -1,0 +1,21 @@
+{
+   "opts": {
+     "destination": "./docs",
+     "recurse": false,
+     "template": "./node_modules/ink-docstrap/template"
+   },
+   "source": {
+     "include": ["./middlewares", "./routes"],
+     "includePattern": ".+\\.js(doc|x)?$",
+     "excludePattern": "(node_modules/|\\.git/)"
+   },
+   "templates": {
+     "cleverLinks": false,
+     "monospaceLinks": false,
+     "theme": "slate"
+   },
+   "tags": {
+     "allowUnknownTags": true,
+     "dictionaries": ["jsdoc", "closure"]
+   }
+}
