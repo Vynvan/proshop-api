@@ -21,8 +21,8 @@ CREATE TABLE `address` (
    `postal_code` VARCHAR(20) NOT NULL,
    `country` VARCHAR(100) NOT NULL,
    `is_default` BOOLEAN NOT NULL DEFAULT FALSE,
-   `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-   FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`),
+   `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`)
 );
 
 CREATE TABLE `product` (
@@ -42,7 +42,7 @@ CREATE TABLE `order` (
    `sum_price` DECIMAL(10, 2),
    `state` BOOLEAN NOT NULL DEFAULT 0,
    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   `stateUpdatedAt` TIMESTAMP DEFAULT NULL,
+   `stateUpdatedAt` TIMESTAMP NULL,
    FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`),
    FOREIGN KEY (`address_id`) REFERENCES `address`(`address_id`)
 );
@@ -56,10 +56,6 @@ CREATE TABLE `order_item` (
    FOREIGN KEY (product_id) REFERENCES product(product_id),
    FOREIGN KEY (order_id) REFERENCES `order`(order_id)
 );
-
-CREATE USER 'proshop-user'@'localhost' IDENTIFIED BY 'proshop1234';
-GRANT ALL PRIVILEGES ON fi36_arndt_fapdw.* TO 'proshop-user'@'localhost';
-FLUSH PRIVILEGES;
 
 INSERT INTO `product` (title, description, price, image, is_active) VALUES
 ('Produkt 1', 'Beschreibung für Produkt 1. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, eligendi. Sed et commodi cupiditate itaque sit vero, consequuntur quasi, soluta ratione, animi nobis at quae labore necessitatibus error porro excepturi!', 19.99, 'image1.jpg', TRUE),
@@ -112,3 +108,7 @@ INSERT INTO `product` (title, description, price, image, is_active) VALUES
 ('Produkt 48', 'Beschreibung für Produkt 48. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, eligendi. Sed et commodi cupiditate itaque sit vero, consequuntur quasi, soluta ratione, animi nobis at quae labore necessitatibus error porro excepturi!', 399.99, 'image48.jpg', TRUE),
 ('Produkt 49', 'Beschreibung für Produkt 49. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, eligendi. Sed et commodi cupiditate itaque sit vero, consequuntur quasi, soluta ratione, animi nobis at quae labore necessitatibus error porro excepturi!', 399.99, 'image49.jpg', TRUE),
 ('Produkt 50', 'Beschreibung für Produkt 50. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, eligendi. Sed et commodi cupiditate itaque sit vero, consequuntur quasi, soluta ratione, animi nobis at quae labore necessitatibus error porro excepturi!', 409.99, 'image50.jpg', TRUE);
+
+CREATE USER 'proshop-user'@'localhost' IDENTIFIED BY 'proshop1234';
+GRANT ALL PRIVILEGES ON fi36_arndt_fapdw.* TO 'proshop-user'@'localhost';
+FLUSH PRIVILEGES;
