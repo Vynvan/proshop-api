@@ -1,3 +1,6 @@
+/**
+ * @module Address
+ */
 import express from "express";
 import getConnection from '../db.js';
 import authenticate from "../middlewares/authenticate.js";
@@ -5,6 +8,15 @@ import authenticate from "../middlewares/authenticate.js";
 const router = express.Router();
 router.use(authenticate);
 
+/**
+ * Retrieves a list of addresses for the authenticated user.
+ * 
+ * @function
+ * @name address/GET
+ * @route GET /
+ * @returns {Object} 200 - An array of addresses in JSON format.
+ * @throws {500} An error message in JSON format if there is an error accessing the database.
+ */
 router.get('/', async (req, res) => {
    let conn;
 
@@ -25,6 +37,25 @@ router.get('/', async (req, res) => {
    }
 });
 
+/**
+ * Creates a new address for the authenticated user.
+ * 
+ * @function
+ * @name address/POST
+ * @route POST /
+ * @param {Object} req.body The request body JSON object.
+ * @param {string} req.body.name Required - The name of the address.
+ * @param {string} req.body.street Required - The street of the address.
+ * @param {string} req.body.city Required - The city of the address.
+ * @param {string} req.body.state - The state of the address.
+ * @param {string} req.body.postal Required - The postal code of the address.
+ * @param {string} req.body.country Required - The country of the address.
+ * @param {boolean} req.body.isDefault - Indicates if this address is the default.
+ * @returns {Object} 201 - The ID of the newly created address.
+ * @throws {400} An error message in JSON format if the request is invalid.
+ * @throws {500} An error message in JSON format if there is an internal server error.
+ * @description Creates a new address for the authenticated user.
+ */
 router.post('/', async (req, res) => {
    const { name, street, city, state, postal, country } = req.body;
    let isDefault = req.body.isDefault;
@@ -60,12 +91,31 @@ router.post('/', async (req, res) => {
    }
 });
 
+/**
+ * Updates an existing address for the authenticated user.
+ * 
+ * @function
+ * @name address/PUT
+ * @route PUT /
+ * @param {Object} req.body The request body JSON object.
+ * @param {integer} req.body.id Required - The ID of the address to update
+ * @param {string} req.body.name The new name of the address
+ * @param {string} req.body.street The new street of the address
+ * @param {string} req.body.city The new city of the address
+ * @param {string} req.body.state The new state of the address
+ * @param {string} req.body.postal The new postal code of the address
+ * @param {string} req.body.country The new country of the address
+ * @param {boolean} req.body.isDefault Indicates if this address is the default
+ * @returns {Object} 200 - Success status
+ * @throws {400} An error message in JSON format if the request is invalid
+ * @throws {500} An error message in JSON format if there is an internal server error
+ */
 router.put('/', async (req, res) => {
    const { id, name, street, city, state, postal, country, isDefault } = req.body;
    const isDefaultChanges = isDefault === 0 || isDefault === 1;
    const columns = [], values = [];
    let conn;
-   console.log('id:', id, ', isDefault:', isDefault)
+
    if (!id) return res.status(400).json({ message: 'Anfrage ungültig!'});
 
    try {

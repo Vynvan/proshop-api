@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Global</title>
+	<title>Documentation Module: Products</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,15 +72,10 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Global</h1>
+	<h1 class="page-title">Module: Products</h1>
 <section>
 
 <header>
-    
-        <h2>
-        
-        </h2>
-        
     
 </header>
 
@@ -153,7 +148,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="login"><span class="type-signature"></span>login()</h4>
+    <h4 class="name" id="~products/:id"><span class="type-signature">&lt;inner> </span>products/:id()</h4>
     
     
 </dt>
@@ -161,7 +156,7 @@
 
     
     <div class="description">
-        Logs in a user by validating the provided username and password.Returns userId and JWT token if the user is valid.
+        Retrieves the details of a specific active product by its ID. With the optional query param update=true, only the description is retrieved to update existing data on the client.
     </div>
     
 
@@ -239,13 +234,13 @@
 
         <tr>
             
-                <td class="name"><code>username</code></td>
+                <td class="name"><code>id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
 
@@ -256,14 +251,21 @@
 
             
 
-            <td class="description last">The username of the user.</td>
+            <td class="description last">The ID of the product to retrieve.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>password</code></td>
+                <td class="name"><code>req.query</code></td>
             
 
             <td class="type">
@@ -280,7 +282,70 @@
 
             
 
-            <td class="description last">The password of the user.</td>
+            <td class="description last">The request querystring.
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>update</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last">Indicates whether to return the full product details or just the description.</td>
         </tr>
 
     
@@ -346,60 +411,8 @@
 
     
     <h5>Throws:</h5>
-    <ul>
-            <li>
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If the password does not match.
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">403</span>
-
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-</li>
-        
-            <li>
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If the username or password is incorrect.
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">404</span>
-
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-</li>
-        
-            <li>
+    
+            
 
 <dl>
     <dt>
@@ -423,15 +436,15 @@
     </dt>
 </dl>
 
-</li>
-        </ul>
+
+        
 
     
     <h5>Returns:</h5>
     
             
 <div class="param-desc">
-    JSON object with userId and token if login is successful.
+    200 - JSON object containing the product. If req.query.update is true, only the id and full description is sent.
 </div>
 
 
@@ -459,7 +472,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="logout"><span class="type-signature"></span>logout()</h4>
+    <h4 class="name" id="~products/GET"><span class="type-signature">&lt;inner> </span>products/GET()</h4>
     
     
 </dt>
@@ -467,109 +480,7 @@
 
     
     <div class="description">
-        Logs out a user by returning a 204 No Content response.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Returns a No Content response.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">204</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="register"><span class="type-signature"></span>register()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Registers a new user by creating an account with provided details.Returns userId and JWT token upon successful registration.
+        Retrieves a paginated list of active products from the database. Products only come with the first 50 chars of the description. Use "products/:id&update=true" to get the full description of the one product with the given id.
     </div>
     
 
@@ -604,13 +515,13 @@
 
         <tr>
             
-                <td class="name"><code>req.body</code></td>
+                <td class="name"><code>req.query</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
 
@@ -621,7 +532,7 @@
 
             
 
-            <td class="description last">The request body JSON object.
+            <td class="description last">The request querystring.
                 <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
@@ -635,7 +546,11 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -647,13 +562,13 @@
 
         <tr>
             
-                <td class="name"><code>email</code></td>
+                <td class="name"><code>page</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
 
@@ -661,23 +576,39 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last">Required - The users email address.</td>
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+
+            <td class="description last">The page number for pagination.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>limit</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
 
@@ -685,58 +616,26 @@
             </td>
 
             
-
-            
-
-            <td class="description last">Required - The users full name.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
+                <td class="attributes">
                 
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Required - The password of the user.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
+                    &lt;optional><br>
                 
-<span class="param-type">string</span>
 
+                
 
-
-            
-            </td>
-
+                
+                </td>
             
 
             
+                <td class="default">
+                
+                    20
+                
+                </td>
+            
 
-            <td class="description last">Required - The username of the user.</td>
+            <td class="description last">The number of products to return per page.</td>
         </tr>
 
     
@@ -802,34 +701,8 @@
 
     
     <h5>Throws:</h5>
-    <ul>
-            <li>
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        An error message in JSON format if the email or username is already taken.
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">403</span>
-
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-</li>
-        
-            <li>
+    
+            
 
 <dl>
     <dt>
@@ -853,15 +726,15 @@
     </dt>
 </dl>
 
-</li>
-        </ul>
+
+        
 
     
     <h5>Returns:</h5>
     
             
 <div class="param-desc">
-    JSON object with userId and token if registration is successful.
+    200 - JSON object containing an array of products and pagination details.
 </div>
 
 

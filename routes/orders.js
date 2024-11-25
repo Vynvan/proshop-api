@@ -1,3 +1,6 @@
+/**
+ * @module Orders
+ */
 import express from "express";
 import getConnection from '../db.js';
 import authenticate from "../middlewares/authenticate.js";
@@ -5,6 +8,17 @@ import authenticate from "../middlewares/authenticate.js";
 const router = express.Router();
 router.use(authenticate);
 
+/**
+ * Retrieves the details of a specific order for the authenticated user.
+ * 
+ * @function
+ * @name orders/:orderId
+ * @route GET /:orderId
+ * @param {string} req.params The request param.
+ * @param {number} req.params.orderId ID of the order to retrieve.
+ * @returns {Object} 200 - An object containing the order details.
+ * @throws {500} If there is an error accessing the database.
+ */
 router.get('/:orderId([0-9]+)', async (req, res) => {
    const orderId = parseInt(req.params.orderId);
    let conn;
@@ -32,6 +46,20 @@ router.get('/:orderId([0-9]+)', async (req, res) => {
    }
 });
 
+/**
+ * Creates a new order for the authenticated user using the provided address and articles.
+ * 
+ * @function
+ * @name orders/POST
+ * @route POST /
+ * @param {Object} req.body The request body JSON object.
+ * @param {number} req.body.addressId The ID of the address for the order.
+ * @param {Array} req.body.articles An array of articles to be included in the order.
+ * @param {number} req.body.sumPrice The total price of the order.
+ * @returns {Object} 201 - JSON object containing the new order ID.
+ * @returns {400} An error message in JSON format if the request is invalid or address not found.
+ * @throws {500} An error message in JSON format if there is an error accessing the database.
+ */
 router.post('/', async (req, res) => {
    let conn;
    const { addressId, articles, sumPrice } = req.body;

@@ -20,13 +20,15 @@ const router = express.Router();
  * @function
  * @name login
  * @route {POST} /users
- * @param {Object} req - The request object containing username and password.
- * @param {Object} res - The response object used to send back the userId and token.
+ * @param {Object} req.body The request body JSON object.
+ * @param {string} req.body.username - The username of the user.
+ * @param {string} req.body.password - The password of the user.
  * @returns {Object} JSON object with userId and token if login is successful.
- * @throws {404} If the username or password is incorrect.
  * @throws {403} If the password does not match.
+ * @throws {404} If the username or password is incorrect.
  * @throws {500} If there is an error accessing the database.
- */router.post('/', async (req, res) => {
+ */
+router.post('/', async (req, res) => {
    const { username, password } = req.body;
    let conn, user;
 
@@ -57,9 +59,7 @@ const router = express.Router();
  * @function
  * @name logout
  * @route {POST} /users/logout
- * @param {Object} req - The request object.
- * @param {Object} res - The response object used to send back the response status.
- * @returns {void} Returns a 204 No Content response.
+ * @returns {204} Returns a No Content response.
  */
 router.post('/logout', (req, res) => {
    return res.status(204);
@@ -72,11 +72,14 @@ router.post('/logout', (req, res) => {
  * @function
  * @name register
  * @route {POST} /users/register
- * @param {Object} req - The request object containing email, name, username, and password.
- * @param {Object} res - The response object used to send back the userId and token.
+ * @param {Object} req.body The request body JSON object.
+ * @param {string} req.body.email Required - The users email address.
+ * @param {string} req.body.name Required - The users full name.
+ * @param {string} req.body.password Required - The password of the user.
+ * @param {string} req.body.username Required - The username of the user.
  * @returns {Object} JSON object with userId and token if registration is successful.
- * @throws {403} If the email or username is already taken.
- * @throws {500} If there is an error accessing the database.
+ * @throws {403} An error message in JSON format if the email or username is already taken.
+ * @throws {500} An error message in JSON format if there is an error accessing the database.
  */
 router.post('/register', async (req, res) => {
    const { email, name, username, password } = req.body;

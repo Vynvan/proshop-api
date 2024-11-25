@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Global</title>
+	<title>Documentation Module: Orders</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,15 +72,10 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Global</h1>
+	<h1 class="page-title">Module: Orders</h1>
 <section>
 
 <header>
-    
-        <h2>
-        
-        </h2>
-        
     
 </header>
 
@@ -153,7 +148,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="login"><span class="type-signature"></span>login()</h4>
+    <h4 class="name" id="~orders/:orderId"><span class="type-signature">&lt;inner> </span>orders/:orderId()</h4>
     
     
 </dt>
@@ -161,7 +156,7 @@
 
     
     <div class="description">
-        Logs in a user by validating the provided username and password.Returns userId and JWT token if the user is valid.
+        Retrieves the details of a specific order for the authenticated user.
     </div>
     
 
@@ -196,13 +191,13 @@
 
         <tr>
             
-                <td class="name"><code>req.body</code></td>
+                <td class="name"><code>req.params</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
 
@@ -213,7 +208,7 @@
 
             
 
-            <td class="description last">The request body JSON object.
+            <td class="description last">The request param.
                 <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
@@ -239,13 +234,13 @@
 
         <tr>
             
-                <td class="name"><code>username</code></td>
+                <td class="name"><code>orderId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
 
@@ -256,31 +251,7 @@
 
             
 
-            <td class="description last">The username of the user.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The password of the user.</td>
+            <td class="description last">ID of the order to retrieve.</td>
         </tr>
 
     
@@ -346,60 +317,8 @@
 
     
     <h5>Throws:</h5>
-    <ul>
-            <li>
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If the password does not match.
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">403</span>
-
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-</li>
-        
-            <li>
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If the username or password is incorrect.
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">404</span>
-
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-</li>
-        
-            <li>
+    
+            
 
 <dl>
     <dt>
@@ -423,15 +342,15 @@
     </dt>
 </dl>
 
-</li>
-        </ul>
+
+        
 
     
     <h5>Returns:</h5>
     
             
 <div class="param-desc">
-    JSON object with userId and token if login is successful.
+    200 - An object containing the order details.
 </div>
 
 
@@ -459,7 +378,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="logout"><span class="type-signature"></span>logout()</h4>
+    <h4 class="name" id="~orders/POST"><span class="type-signature">&lt;inner> </span>orders/POST()</h4>
     
     
 </dt>
@@ -467,109 +386,7 @@
 
     
     <div class="description">
-        Logs out a user by returning a 204 No Content response.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Returns a No Content response.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">204</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="register"><span class="type-signature"></span>register()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Registers a new user by creating an account with provided details.Returns userId and JWT token upon successful registration.
+        Creates a new order for the authenticated user using the provided address and articles.
     </div>
     
 
@@ -647,13 +464,13 @@
 
         <tr>
             
-                <td class="name"><code>email</code></td>
+                <td class="name"><code>addressId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
 
@@ -664,20 +481,20 @@
 
             
 
-            <td class="description last">Required - The users email address.</td>
+            <td class="description last">The ID of the address for the order.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>articles</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Array</span>
 
 
 
@@ -688,20 +505,20 @@
 
             
 
-            <td class="description last">Required - The users full name.</td>
+            <td class="description last">An array of articles to be included in the order.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>password</code></td>
+                <td class="name"><code>sumPrice</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
 
@@ -712,31 +529,7 @@
 
             
 
-            <td class="description last">Required - The password of the user.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Required - The username of the user.</td>
+            <td class="description last">The total price of the order.</td>
         </tr>
 
     
@@ -802,34 +595,8 @@
 
     
     <h5>Throws:</h5>
-    <ul>
-            <li>
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        An error message in JSON format if the email or username is already taken.
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">403</span>
-
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-</li>
-        
-            <li>
+    
+            
 
 <dl>
     <dt>
@@ -853,15 +620,15 @@
     </dt>
 </dl>
 
-</li>
-        </ul>
+
+        
 
     
     <h5>Returns:</h5>
-    
-            
+    <ul>
+            <li>
 <div class="param-desc">
-    JSON object with userId and token if registration is successful.
+    201 - JSON object containing the new order ID.
 </div>
 
 
@@ -879,8 +646,30 @@
     </dd>
 </dl>
 
-
+</li>
         
+            <li>
+<div class="param-desc">
+    An error message in JSON format if the request is invalid or address not found.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">400</span>
+
+
+
+    </dd>
+</dl>
+
+</li>
+        </ul>
 
     
 </dd>
