@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: Products</title>
+	<title>Documentation Module: Middleware</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,7 +72,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Products</h1>
+	<h1 class="page-title">Module: Middleware</h1>
 <section>
 
 <header>
@@ -148,7 +148,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~products/:id"><span class="type-signature">&lt;inner> </span>products/:id()</h4>
+    <h4 class="name" id="~authenticate"><span class="type-signature">&lt;inner> </span>authenticate()</h4>
     
     
 </dt>
@@ -156,7 +156,7 @@
 
     
     <div class="description">
-        Retrieves the details of a specific active product by its ID. With the optional query param update=true, only the description is retrieved to update existing data on the client.
+        Middleware that verifies the jwt in the header and throws 403 if this verification fails.
     </div>
     
 
@@ -191,81 +191,7 @@
 
         <tr>
             
-                <td class="name"><code>req.body</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The request body JSON object.
-                <h6 class="method-params-label method-subparams-label">Properties</h6>
-                
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The ID of the product to retrieve.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>req.query</code></td>
+                <td class="name"><code>req.header</code></td>
             
 
             <td class="type">
@@ -282,7 +208,7 @@
 
             
 
-            <td class="description last">The request querystring.
+            <td class="description last">The request header.
                 <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
@@ -296,11 +222,7 @@
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
-        
-        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -312,13 +234,13 @@
 
         <tr>
             
-                <td class="name"><code>update</code></td>
+                <td class="name"><code>authorization</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">string</span>
 
 
 
@@ -326,26 +248,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
 
-            <td class="description last">Indicates whether to return the full product details or just the description.</td>
+            <td class="description last">Required - Holds the bearer token.</td>
         </tr>
 
     
@@ -417,7 +323,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        If there is an error accessing the database.
+        An error message in JSON format with errorType: token.
         </div>
     </dt>
     <dt>
@@ -427,7 +333,7 @@
             </dt>
             <dd>
                 
-<span class="param-type">500</span>
+<span class="param-type">403</span>
 
 
 
@@ -444,297 +350,7 @@
     
             
 <div class="param-desc">
-    200 - JSON object containing the product. If req.query.update is true, only the id and full description is sent.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="~products/GET"><span class="type-signature">&lt;inner> </span>products/GET()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Retrieves a paginated list of active products from the database. Products only come with the first 50 chars of the description. Use "products/:id&update=true" to get the full description of the one product with the given id.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>req.query</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The request querystring.
-                <h6 class="method-params-label method-subparams-label">Properties</h6>
-                
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>page</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last">The page number for pagination.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>limit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    20
-                
-                </td>
-            
-
-            <td class="description last">The number of products to return per page.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Throws:</h5>
-    
-            
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        An error message in JSON format if there is an error accessing the database.
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">500</span>
-
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-
-        
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    200 - JSON object containing an array of products and pagination details.
+    Adds req.user holding the user.id for usage in the authenticated routes.
 </div>
 
 
