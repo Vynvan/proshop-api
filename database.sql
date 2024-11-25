@@ -40,7 +40,7 @@ CREATE TABLE `order` (
    `user_id` INT NOT NULL,
    `address_id` INT NOT NULL,
    `sum_price` DECIMAL(10, 2),
-   `state` TINYINT NOT NULL DEFAULT 0,
+   `state` BOOLEAN NOT NULL DEFAULT 0,
    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    `stateUpdatedAt` TIMESTAMP DEFAULT NULL,
    FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`),
@@ -54,7 +54,7 @@ CREATE TABLE `order_item` (
    `quantity` INT NOT NULL DEFAULT 1,
    PRIMARY KEY (product_id, order_id),
    FOREIGN KEY (product_id) REFERENCES product(product_id),
-   FOREIGN KEY (order_id) REFERENCES order(order_id)
+   FOREIGN KEY (order_id) REFERENCES `order`(order_id)
 );
 
 CREATE USER 'proshop-user'@'localhost' IDENTIFIED BY 'proshop1234';
