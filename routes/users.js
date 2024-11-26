@@ -78,6 +78,7 @@ router.post('/logout', (req, res) => {
  * @param {string} req.body.password Required - The password of the user.
  * @param {string} req.body.username Required - The username of the user.
  * @returns {Object} JSON object with userId and token if registration is successful.
+ * @throws {401} An error message in JSON format if the email don't matches the configurable regex.
  * @throws {403} An error message in JSON format if the email or username is already taken.
  * @throws {500} An error message in JSON format if there is an error accessing the database.
  */
@@ -87,12 +88,20 @@ router.post('/register', async (req, res) => {
 
    try {
       conn = await getConnection();
-      const [{ emailCount }] = await conn.query('SELECT COUNT(*) AS emailCount FROM user WHERE email=?', [email]);
-      if (emailCount != 0) {
-         return res.status(403).json({ message: 'Ein Benutzerkonto mit dieser Email-Adresse existiert bereits!' });
+
+      const emailRegex = new RegExp(process.env.EMAIL_REGEX);
+      if (!emailRegex.test(email)) {
+         res.status(401).json({ message: 'Die E-Mail-Adresse entspricht nicht den Anforderungen!' });
       }
 
-      const [{ usernameCount }] = await conn.query('SELECT COUNT(*) AS usernameCount FROM user WHERE username=?', [username]);
+      const [{ emailCount }] = await conn.query(
+         'SELECT COUNT(*) AS emailCount FROM user WHERE email=?', [email]);
+      if (emailCount != 0) {
+         return res.status(403).json({ message: 'Ein Benutzerkonto mit dieser E-Mail-Adresse existiert bereits!' });
+      }
+
+      const [{ usernameCount }] = await conn.query(
+         'SELECT COUNT(*) AS usernameCount FROM user WHERE username=?', [username]);
       if (usernameCount != 0) {
          return res.status(403).json({ message: 'Dieser Benutzername ist schon vergeben!' });
       }
