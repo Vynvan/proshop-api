@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: Middleware</title>
+	<title>Documentation Module: Orders</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,7 +72,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Middleware</h1>
+	<h1 class="page-title">Module: Orders</h1>
 <section>
 
 <header>
@@ -148,7 +148,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~authenticate"><span class="type-signature">&lt;inner> </span>authenticate()</h4>
+    <h4 class="name" id="~orders/:orderId"><span class="type-signature">&lt;inner> </span>orders/:orderId()</h4>
     
     
 </dt>
@@ -156,7 +156,7 @@
 
     
     <div class="description">
-        Middleware that verifies the jwt in the header and throws 403 if this verification fails.
+        Retrieves the details of a specific order for the authenticated user.
     </div>
     
 
@@ -191,7 +191,7 @@
 
         <tr>
             
-                <td class="name"><code>req.header</code></td>
+                <td class="name"><code>req.params</code></td>
             
 
             <td class="type">
@@ -208,7 +208,7 @@
 
             
 
-            <td class="description last">The request header.
+            <td class="description last">The request param.
                 <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
@@ -234,13 +234,13 @@
 
         <tr>
             
-                <td class="name"><code>authorization</code></td>
+                <td class="name"><code>orderId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
 
@@ -251,7 +251,7 @@
 
             
 
-            <td class="description last">Required - Holds the bearer token.</td>
+            <td class="description last">ID of the order to retrieve.</td>
         </tr>
 
     
@@ -323,7 +323,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        An error message in JSON format with errorType: token.
+        If there is an error accessing the database.
         </div>
     </dt>
     <dt>
@@ -333,7 +333,7 @@
             </dt>
             <dd>
                 
-<span class="param-type">403</span>
+<span class="param-type">500</span>
 
 
 
@@ -350,7 +350,7 @@
     
             
 <div class="param-desc">
-    Adds req.user holding the user.id for usage in the authenticated routes.
+    200 - An object containing the order details.
 </div>
 
 
@@ -370,6 +370,306 @@
 
 
         
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~orders/POST"><span class="type-signature">&lt;inner> </span>orders/POST()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Creates a new order for the authenticated user using the provided address and articles.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req.body</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The request body JSON object.
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>addressId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The ID of the address for the order.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>articles</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of articles to be included in the order.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sumPrice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The total price of the order.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        An error message in JSON format if there is an error accessing the database.
+        </div>
+    </dt>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">500</span>
+
+
+
+            </dd>
+        </dl>
+    </dt>
+</dl>
+
+
+        
+
+    
+    <h5>Returns:</h5>
+    <ul>
+            <li>
+<div class="param-desc">
+    201 - JSON object containing the new order ID.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+</li>
+        
+            <li>
+<div class="param-desc">
+    An error message in JSON format if the request is invalid or address not found.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">400</span>
+
+
+
+    </dd>
+</dl>
+
+</li>
+        </ul>
 
     
 </dd>
