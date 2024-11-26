@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
  * @returns {204} Returns a No Content response.
  */
 router.post('/logout', (req, res) => {
-   return res.status(204);
+   return res.status(204).end();
 });
 
 /**
