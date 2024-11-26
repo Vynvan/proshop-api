@@ -78,7 +78,7 @@ router.post('/logout', (req, res) => {
  * @param {string} req.body.password Required - The password of the user.
  * @param {string} req.body.username Required - The username of the user.
  * @returns {Object} JSON object with userId and token if registration is successful.
- * @throws {401} An error message in JSON format if the email don't matches the configurable regex.
+ * @throws {400} An error message in JSON format if the email or password don't matches the configurable regex.
  * @throws {403} An error message in JSON format if the email or username is already taken.
  * @throws {500} An error message in JSON format if there is an error accessing the database.
  */
@@ -91,7 +91,14 @@ router.post('/register', async (req, res) => {
 
       const emailRegex = new RegExp(process.env.EMAIL_REGEX);
       if (!emailRegex.test(email)) {
-         res.status(401).json({ message: 'Die E-Mail-Adresse entspricht nicht den Anforderungen!' });
+         res.status(400).json({ message: 'Die E-Mail-Adresse entspricht nicht den Anforderungen!' });
+      }
+
+      const passwordRegex = new RegExp(process.env.PASSWORD_REGEX);
+      if (!passwordRegex.test(password)) {
+          res.status(400).json({
+            message: 'Das Passwort ist ungültig. Es muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten.'
+         });
       }
 
       const [{ emailCount }] = await conn.query(
