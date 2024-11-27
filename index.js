@@ -16,6 +16,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cors({ origin: process.env.HOST.split(',') }));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
+app.use('/', express.static(path.join(__dirname, 'public')));
 
 // Routes:
 app.use('/address', addressRouter);
