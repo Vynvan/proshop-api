@@ -12,7 +12,8 @@ import 'dotenv/config';
  * @param {string} req.header The request header.
  * @param {string} req.header.authorization Required - Holds the bearer token. 
  * @returns {Object} Adds req.user holding the user.id for usage in the authenticated routes.
- * @throws {403} An error message in JSON format with errorType: token.
+ * @throws {401} An error message in JSON format with errorType: token if there is no token.
+ * @throws {403} An error message in JSON format with errorType: token if verification fails.
  */
 const authenticate = async (req, res, next) => {
    const token = req.headers.authorization?.split(' ')[1];
